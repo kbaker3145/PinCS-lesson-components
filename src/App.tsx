@@ -1,6 +1,6 @@
 import React from "react";
 
-import HaberReactor from "./components/HaberReactor.tsx";
+import HaberReactor from "./components/HaberReactor.jsx";
 
 /**
  * Registry of all testable components.

@@ -1,43 +1,49 @@
 import React from "react";
 
-const H2_COLOR = "#d4a017";
-const H2_BG = "#fdf6e3";
-const N2_COLOR = "#2563eb";
-const N2_BG = "#eff6ff";
-
-function H2Label({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      style={{
-        color: H2_COLOR,
-        backgroundColor: H2_BG,
-        padding: "1px 5px",
-        borderRadius: "4px",
-        fontWeight: 600,
-      }}
-    >
-      {children}
-    </span>
-  );
-}
-
-function N2Label({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      style={{
-        color: N2_COLOR,
-        backgroundColor: N2_BG,
-        padding: "1px 5px",
-        borderRadius: "4px",
-        fontWeight: 600,
-      }}
-    >
-      {children}
-    </span>
-  );
-}
-
 function HaberReactor() {
+
+  // Colors
+  const H2_COLOR = "#d4a017";
+  const H2_BG = "#fdf6e3";
+  const N2_COLOR = "#2563eb";
+  const N2_BG = "#eff6ff";
+
+
+  // Sub-components
+  function H2Label({ children }) {
+    return (
+      <span
+        style={{
+          color: H2_COLOR,
+          backgroundColor: H2_BG,
+          padding: "1px 5px",
+          borderRadius: "4px",
+          fontWeight: 600,
+        }}
+      >
+        {children}
+      </span>
+    );
+  }
+
+  function N2Label({ children }) {
+    return (
+      <span
+        style={{
+          color: N2_COLOR,
+          backgroundColor: N2_BG,
+          padding: "1px 5px",
+          borderRadius: "4px",
+          fontWeight: 600,
+        }}
+      >
+        {children}
+      </span>
+    );
+  }
+
+
+  // Styles
   const styles = {
     container: {
       display: "flex",
@@ -49,13 +55,8 @@ function HaberReactor() {
     },
 
     controlSection: {
-      textAlign: "center" as const,
+      textAlign: "center",
       minWidth: "260px",
-    },
-
-    slider: {
-      width: "220px",
-      marginTop: "6px",
     },
 
     sliderH2: {
@@ -84,18 +85,17 @@ function HaberReactor() {
     },
 
     value: {
-      fontWeight: "bold" as const,
+      fontWeight: "bold",
     },
   };
 
+
+  // State
   const [h2, setH2] = React.useState(6);
   const [n2, setN2] = React.useState(4);
 
-  /*
-    Reaction:  N2 + 3H2 → 2NH3
-    Ratios:    N2 → 2 NH3,  H2 → (2/3) NH3
-  */
 
+  // Chemistry
   const nh3FromN2 = n2 * 2;
   const nh3FromH2 = h2 * (2 / 3);
 
@@ -119,27 +119,40 @@ function HaberReactor() {
   const n2Left = Math.max(0, n2 - n2Used);
   const h2Left = Math.max(0, h2 - h2Used);
 
-  const limitingStyle: React.CSSProperties =
-    limiting === "H₂"
-      ? { color: H2_COLOR, backgroundColor: H2_BG, padding: "1px 5px", borderRadius: "4px" }
-      : limiting === "N₂"
-        ? { color: N2_COLOR, backgroundColor: N2_BG, padding: "1px 5px", borderRadius: "4px" }
-        : {};
 
+  const limitingStyle =
+    limiting === "H₂"
+      ? {
+          color: H2_COLOR,
+          backgroundColor: H2_BG,
+          padding: "1px 5px",
+          borderRadius: "4px",
+        }
+      : limiting === "N₂"
+      ? {
+          color: N2_COLOR,
+          backgroundColor: N2_BG,
+          padding: "1px 5px",
+          borderRadius: "4px",
+        }
+      : {};
+
+
+  // Render
   return (
     <div style={styles.container}>
 
-      {/* Controls */}
       <div style={styles.controlSection}>
-        <h3>Reaction Equation</h3>
-        <p>N₂ + 3H₂ → 2NH₃</p> 
+        <h2><strong>Reaction Equation:</strong></h2>
+        <p>N₂ + 3H₂ → 2NH₃</p>
+        <br />
 
-
-        <h3>Reactant Controls</h3>
+        <h3><strong>Reactant Controls:</strong></h3>
 
         <p>
-          <H2Label>H₂</H2Label> (mol): <strong>{h2.toFixed(1)}</strong>
+          <H2Label>H₂</H2Label>: {h2.toFixed(1)} mol
         </p>
+
         <input
           type="range"
           min="0"
@@ -151,8 +164,9 @@ function HaberReactor() {
         />
 
         <p>
-          <N2Label>N₂</N2Label> (mol): <strong>{n2.toFixed(1)}</strong>
+          <N2Label>N₂</N2Label>: {n2.toFixed(1)} mol
         </p>
+
         <input
           type="range"
           min="0"
@@ -164,51 +178,42 @@ function HaberReactor() {
         />
       </div>
 
-      {/* Output */}
+
       <div style={styles.outputSection}>
-        <h3>Reaction Output</h3>
+        <h2><strong>Reaction Output</strong></h2>
 
         <div style={styles.card}>
-          <p>
-            NH₃ Produced:{" "}
-            <span style={styles.value}>{nh3Made.toFixed(2)} mol</span>
-          </p>
+          <p><strong>NH₃ Produced:</strong> {nh3Made.toFixed(2)} mol</p>
 
           <p>
-            Limiting Reactant:{" "}
-            <span
-              style={{
-                ...styles.value,
-                ...limitingStyle,
-                display: "inline-block",
-              }}
-            >
+            <strong>Limiting Reactant:{" "}</strong>
+            <span style={{ ...styles.value, ...limitingStyle }}>
               {limiting}
             </span>
           </p>
         </div>
 
         <div style={styles.card}>
-          <h4>Leftovers</h4>
+          <h4><strong>Leftovers</strong></h4>
 
           <p>
-            <H2Label>H₂</H2Label> Remaining:{" "}
-            <span style={styles.value}>{h2Left.toFixed(2)} mol</span>
+            <H2Label>H₂</H2Label>: {h2Left.toFixed(2)} mol
           </p>
 
           <p>
-            <N2Label>N₂</N2Label> Remaining:{" "}
-            <span style={styles.value}>{n2Left.toFixed(2)} mol</span>
+            <N2Label>N₂</N2Label>: {n2Left.toFixed(2)} mol
           </p>
         </div>
 
         <p>
-          Try increasing only <H2Label>H₂</H2Label>. Notice that NH₃ increases
-          at first, then stops when <N2Label>N₂</N2Label> becomes limiting.
+          Increase <H2Label>H₂</H2Label> and observe when{" "}
+          <N2Label>N₂</N2Label> becomes limiting.
         </p>
       </div>
+
     </div>
   );
 }
+
 
 export default HaberReactor;

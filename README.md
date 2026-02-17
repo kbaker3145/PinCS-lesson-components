@@ -1,5 +1,7 @@
 # KB Lesson Components
 
+## must be in JS!!
+
 A shared React + Vite project for building and testing standalone interactive lesson components (`.tsx` files). Each component is self-contained so it can be previewed here, then copied to another site when ready.
 
 ## Project Structure
